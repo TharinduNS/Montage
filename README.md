@@ -18,7 +18,8 @@
 MultiQC is a tool to create a single report with interactive plots
 for multiple bioinformatics analyses across many samples.
 
-This fork includes [computational chemistry, glycoinformatics and chemical biology toolsi, more documentation here](README-chemicalglycobiology.md)
+#  Chemical GlycoBiology Fork
+This fork includes [computational chemistry, glycoinformatics and chemical biology tools, more documentation here](README-chemicalglycobiology.md)
 
 MultiQC is written in Python (tested with v2.7, 3.4, 3.5 and 3.6). It is
 available on the [Python Package Index](https://pypi.python.org/pypi/multiqc/)

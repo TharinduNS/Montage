@@ -1,4 +1,4 @@
-#usr/bin/env python
+#!/usr/bin/env python
 
 """ MultiQC module to parse output from Computational QM calculations e.g. Gaussian """
 
@@ -33,7 +33,7 @@ class MultiqcModule(BaseMultiqcModule):
             'torsions': {}
         }
 
-        # Find and load an  reports
+        # Find and load reports
         for f in self.find_log_files('comp_qm', filehandles=True):
             self.parse_comp_qm_log(f)
 
