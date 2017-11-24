@@ -92,7 +92,15 @@ class MultiqcModule(BaseMultiqcModule):
         s_name = self.clean_s_name(f['s_name'],f['root'])
         #. json file example
         import json
-        _,tessellate_version,fileformat = f['f'].readline().split() # check the format
+        firstline = f['f'].readline().split() # check the format
+        if len(firstline)==3:
+            _,tessellate_version,fileformat = firstline
+        elif len(firstline)==4:
+            _,tessellate_version,fileformat,input_format = firstline
+            if "pdb" in input_format:
+                self.subsamples=True
+        else:
+            log.debug("Unable to read firstline of file")
         log.debug("Version %s %s", tessellate_version,fileformat)
         if fileformat=="txt":
             if s_name is not None:
@@ -124,7 +132,18 @@ class MultiqcModule(BaseMultiqcModule):
                 pdbid=itm["pdbid"]
                 try:
                     #. add data to numerics no matter what
-                    numerics_all_sizes[str(ringsize)].append({'x':len(numerics_all_sizes[str(ringsize)]),'y':numeric,'name':conformer})
+                    #.. Add a colorbrewer2.org scheme. 5-class Set3 for qualitative
+                    if 'E' in conformer:
+                        ringcolor="#8dd3c7"
+                    elif 'T' in conformer:
+                        ringcolor="#ffffb3"
+                    elif 'UAP' in conformer:
+                        ringcolor="#bebada"
+                    elif 'P' in conformer:
+                        ringcolor="#fb8072"
+                    else:
+                        ringcolor="#80b1d3"
+                    numerics_all_sizes[str(ringsize)].append({'x':len(numerics_all_sizes[str(ringsize)]),'y':numeric,'name':conformer, 'color':ringcolor})
                     if conformer in conformers.keys():
                         log.debug("Add to conformer %s %s",conformer,conformers.keys())
                         conformers[conformer]+=1
@@ -166,12 +185,24 @@ class MultiqcModule(BaseMultiqcModule):
         log.debug("Data added for this log: %s",str(self.comp_tessellate_data['all'][s_name]))
         #. add data to the tessellate 5 section
         self.add_data_source(f, section='five') #section='mulliken')
-        self.comp_tessellate_data['five'][s_name] = conformers_all_sizes['5']
-        log.debug("Data added for this log: %s",str(self.comp_tessellate_data['five'][s_name]))
+        if len(conformers_all_sizes['5'])>0:
+            self.comp_tessellate_data['five'][s_name] = conformers_all_sizes['5']
+            log.debug("Data added for this log: %s",str(self.comp_tessellate_data['five'][s_name]))
         #. add data to the tessellate 6 section
         self.add_data_source(f, section='six') #section='mulliken')
-        self.comp_tessellate_data['six'][s_name] = conformers_all_sizes['6']
-        log.debug("Data added for this log: %s",str(self.comp_tessellate_data['six'][s_name]))
+        if len(conformers_all_sizes['6'])>0:
+            self.comp_tessellate_data['six'][s_name] = conformers_all_sizes['6']
+            log.debug("Data added for this log: %s",str(self.comp_tessellate_data['six'][s_name]))
+        #. add data to the tessellate 7 section
+        self.add_data_source(f, section='seven') #section='mulliken')
+        if len(conformers_all_sizes['7'])>0:
+            self.comp_tessellate_data['seven'][s_name] = conformers_all_sizes['7']
+            log.debug("Data added for this log: %s",str(self.comp_tessellate_data['seven'][s_name]))
+        #. add data to the tessellate 8 section
+        self.add_data_source(f, section='eight') #section='mulliken')
+        if len(conformers_all_sizes['8'])>0:
+            self.comp_tessellate_data['eight'][s_name] = conformers_all_sizes['8']
+            log.debug("Data added for this log: %s",str(self.comp_tessellate_data['eight'][s_name]))
         #. add numerics data for scatter plot
         self.comp_tessellate_data['five_numeric'][s_name] = numerics_all_sizes['5']
         self.comp_tessellate_data['six_numeric'][s_name] = numerics_all_sizes['6']
