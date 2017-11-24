@@ -108,6 +108,8 @@ setup(
             'prokka = multiqc.modules.prokka:MultiqcModule',
             'qorts = multiqc.modules.qorts:MultiqcModule',
             'qualimap = multiqc.modules.qualimap:MultiqcModule',
+            'comp_tessellate = multiqc.modules.comp_tessellate:MultiqcModule',
+            'comp_qm = multiqc.modules.comp_qm:MultiqcModule',
             'quast = multiqc.modules.quast:MultiqcModule',
             'rna_seqc = multiqc.modules.rna_seqc:MultiqcModule',
             'rsem = multiqc.modules.rsem:MultiqcModule',
