@@ -88,7 +88,8 @@ Then include newmodule in:
   - If changes to the main code base become very exotic (some are in the pipeline), then this fork will diverge heavily from the base of multiqc and will need be renamed. Otherwise Montage will be a plugin for multiqc, a pull request will be submitted.
 
 # Credits
-[This package is a fork of MultiQC] (https://github.com/ewels/MultiQC/) . [Project Lead & Contributors for MultiQC](README-multiqc.md]
+[This package is a fork of MultiQC](https://github.com/ewels/MultiQC/)
+[Project Lead & Contributors for MultiQC](README-multiqc.md)
 Montage credits [@chrisbarnetttser](https://github.com/chrisbarnettster)
 
 
