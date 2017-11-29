@@ -130,6 +130,7 @@ class MultiqcModule(BaseMultiqcModule):
                 ringsize=itm["ringsize"]
                 numeric=itm["numeric"]
                 pdbid=itm["pdbid"]
+                macro=itm["macro"]
                 try:
                     #. add data to numerics no matter what
                     #.. Add a colorbrewer2.org scheme. 5-class Set3 for qualitative
@@ -143,29 +144,55 @@ class MultiqcModule(BaseMultiqcModule):
                         ringcolor="#fb8072"
                     else:
                         ringcolor="#80b1d3"
-                    numerics_all_sizes[str(ringsize)].append({'x':len(numerics_all_sizes[str(ringsize)]),'y':numeric,'name':conformer, 'color':ringcolor})
-                    if conformer in conformers.keys():
-                        log.debug("Add to conformer %s %s",conformer,conformers.keys())
-                        conformers[conformer]+=1
-            
-                    else: #initialise count to 1 for this conformer
-                        log.debug("Initialise conformer %s %s",conformer,conformers.keys())
-                        conformers[conformer]=1
-                    if conformer in conformers_all_sizes[str(ringsize)].keys():
-                        conformers_all_sizes[str(ringsize)][conformer]+=1
-            
-                    else: #initialise count to 1 for this conformer
-                        conformers_all_sizes[str(ringsize)][conformer]=1
-
+                    if macro:
+                        numerics_all_sizes['macro'].append({'x':len(numerics_all_sizes[str(ringsize)]),'y':numeric,'name':conformer, 'color':ringcolor})
+#                        if conformer in conformers.keys():
+#                            log.debug("Add to conformer %s %s",conformer,conformers.keys())
+#                            conformers[conformer]+=1
+#                
+#                        else: #initialise count to 1 for this conformer
+#                            log.debug("Initialise conformer %s %s",conformer,conformers.keys())
+#                            conformers[conformer]=1
+                    else:
+                        numerics_all_sizes[str(ringsize)].append({'x':len(numerics_all_sizes[str(ringsize)]),'y':numeric,'name':conformer, 'color':ringcolor})
+                        if conformer in conformers.keys():
+                            log.debug("Add to conformer %s %s",conformer,conformers.keys())
+                            conformers[conformer]+=1
+                
+                        else: #initialise count to 1 for this conformer
+                            log.debug("Initialise conformer %s %s",conformer,conformers.keys())
+                            conformers[conformer]=1
+                    if macro:
+                        if conformer in conformers_all_sizes["macro"].keys():
+                            conformers_all_sizes["macro"][conformer]+=1
+                
+                        else: #initialise count to 1 for this conformer
+                            conformers_all_sizes["macro"][conformer]=1
+                    else:
+                        if conformer in conformers_all_sizes[str(ringsize)].keys():
+                            conformers_all_sizes[str(ringsize)][conformer]+=1
+                
+                        else: #initialise count to 1 for this conformer
+                            conformers_all_sizes[str(ringsize)][conformer]=1
+    
                     #. stratify by pdbid and start wondering if something like pandas could do this better...
                     if self.subsamples:
-                        if pdbid in pdb_all_sizes[str(ringsize)].keys():
-                            if conformer in pdb_all_sizes[str(ringsize)][pdbid].keys():
-                                pdb_all_sizes[str(ringsize)][pdbid][conformer]+=1
+                        if macro:
+                            if pdbid in pdb_all_sizes['macro'].keys():
+                                if conformer in pdb_all_sizes['macro'][pdbid].keys():
+                                    pdb_all_sizes['macro'][pdbid][conformer]+=1
+                                else:
+                                    pdb_all_sizes['macro'][pdbid][conformer]=1
                             else:
-                                pdb_all_sizes[str(ringsize)][pdbid][conformer]=1
+                                pdb_all_sizes['macro'][pdbid]={conformer:1}
                         else:
-                            pdb_all_sizes[str(ringsize)][pdbid]={conformer:1}
+                            if pdbid in pdb_all_sizes[str(ringsize)].keys():
+                                if conformer in pdb_all_sizes[str(ringsize)][pdbid].keys():
+                                    pdb_all_sizes[str(ringsize)][pdbid][conformer]+=1
+                                else:
+                                    pdb_all_sizes[str(ringsize)][pdbid][conformer]=1
+                            else:
+                                pdb_all_sizes[str(ringsize)][pdbid]={conformer:1}
 
                 except Exception as e:
                     log.debug("Except conformer not included in dictionary %s", conformer)
@@ -203,6 +230,9 @@ class MultiqcModule(BaseMultiqcModule):
         if len(conformers_all_sizes['8'])>0:
             self.comp_tessellate_data['eight'][s_name] = conformers_all_sizes['8']
             log.debug("Data added for this log: %s",str(self.comp_tessellate_data['eight'][s_name]))
+        if len(conformers_all_sizes['macro'])>0:
+            self.comp_tessellate_data['macro'][s_name] = conformers_all_sizes['macro']
+            log.debug("Data added for this log: %s",str(self.comp_tessellate_data['macro'][s_name]))
         #. add numerics data for scatter plot
         self.comp_tessellate_data['five_numeric'][s_name] = numerics_all_sizes['5']
         self.comp_tessellate_data['six_numeric'][s_name] = numerics_all_sizes['6']
@@ -219,6 +249,8 @@ class MultiqcModule(BaseMultiqcModule):
                 self.comp_tessellate_data['seven']["_".join([s_name,pdbkey])] = pdb_all_sizes['7'][pdbkey]
             for pdbkey in pdb_all_sizes['8']:
                 self.comp_tessellate_data['eight']["_".join([s_name,pdbkey])] = pdb_all_sizes['8'][pdbkey]
+            for pdbkey in pdb_all_sizes['macro']:
+                self.comp_tessellate_data['macro']["_".join([s_name,pdbkey])] = pdb_all_sizes['macro'][pdbkey]
     
 
 
