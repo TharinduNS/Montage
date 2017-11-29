@@ -21,8 +21,8 @@ class MultiqcModule(BaseMultiqcModule):
     def __init__(self):
 
         # Initialise the parent object
-        super(MultiqcModule, self).__init__(name='Tessellate', anchor='comp_tessellate',
-        href="http://bitbucket.org/scientificomputing.com",
+        super(MultiqcModule, self).__init__(name='Tessellate', anchor='montage_tessellate',
+        href="https://github.com/scientificomputing/tessellate",
         info="A program for tesselating ring cycles, identifying conformations from coordinates and molecular trajectories")
 
         # Set up data structure
@@ -45,7 +45,7 @@ class MultiqcModule(BaseMultiqcModule):
         #. decide whether to create subsamples based on pdbid (bad idea for timeseries, good idea for PDB structures)
         self.subsamples=False
 
-        for f in self.find_log_files('comp_tessellate', filehandles=True):
+        for f in self.find_log_files('montage_tessellate', filehandles=True):
             self.parse_comp_tessellate_log(f)
 
         # Filter to strip out ignored sample names

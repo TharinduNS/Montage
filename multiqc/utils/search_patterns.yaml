@@ -108,7 +108,7 @@ conpair/concordance:
 conpair/contamination:
     contents: 'Tumor sample contamination level: '
     num_lines: 3
-comp_tessellate:
+montage_tessellate:
     num_lines: 1
     contents: 'tessellate'
 comp_qm:

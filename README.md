@@ -1,6 +1,7 @@
 # ![MultiQC](https://raw.githubusercontent.com/ewels/MultiQC/master/docs/images/MultiQC_logo.png)
 
-# Montage - MultiQC for Chemical GlycoBiology
+# Montage
+## MultiQC for Chemical GlycoBiology
 ### Aggregate chemical glycobiology results across many samples into a single report.
 
 This fork includes computational chemistry, glycoinformatics and chemical biology tools.
@@ -18,7 +19,7 @@ Currently, supported computational, glycoinformatics and chemical biology tools 
 
 |Molecular Dynamics               | Quantum Chemistry      | Post-dynamics analysis (e.g. Ring Pucker) | Other |
 |---------------------------------|------------------------|---------------------------|----------------------|
-|                                 |comp_qm                 |comp_tessellate             |                      |
+|                                 |comp_qm                 |montage_tessellate             |                      |
 
 
 ## Installation
@@ -26,15 +27,24 @@ Currently, supported computational, glycoinformatics and chemical biology tools 
 ### Prerequisite dev environment
 Install Ananconda python3, then create an environment for MultiQC
 
+```
 conda create -n multiqc
 source activate multiqc
+```
 
 ### clone the code
+
+```
 git clone git@github.com:scientificomputing/Montage.git
 pushd Montage
+```
 
 ### compile the code
-python setup.py install > log.log
+```
+make install
+
+```
+
 
 ## Usage
 Once installed, you can use MultiQC by navigating to your analysis directory
@@ -43,7 +53,16 @@ Once installed, you can use MultiQC by navigating to your analysis directory
 multiqc .
 ```
 
-Select log files from the data dir, only use the quantum analysis module and force creation of a report (overwrites existing)
+### Tessellate example
+[Install the tessellate tool](https://github.com/scientificomputing/tessellate)
+
+```
+multiqc output-usecase-cyclodextrin -m montage_tessellate -f
+```
+
+### QM example
+Select log files from the data dir, only use the quantum analysis module and force creation of a report (overwrites existing):
+
 ```bash
 multiqc data/*.log -m comp_qm -f
 ```
@@ -64,6 +83,9 @@ Then include newmodule in:
 
 - render windows separately for large report. i.e. turn pieces on and off for memory intensive report
 - fix colour scales to include negative numbers
+- include all modules within the montage module, so usage will be -m montage and all submodule will be run
+- pip install that does not clash with multiqc. Ideally without renaming the main codebase. 
+  - If changes to the main code base become very exotic (some are in the pipeline), then this fork will diverge heavily from the base of multiqc and will need be renamed. Otherwise Montage will be a plugin for multiqc, a pull request will be submitted.
 
 # Credits
 [This package is a fork of MultiQC] (https://github.com/ewels/MultiQC/) . [Project Lead & Contributors for MultiQC](README-multiqc.md]
