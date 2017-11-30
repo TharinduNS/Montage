@@ -126,11 +126,15 @@ class MultiqcModule(BaseMultiqcModule):
             log.debug(all_json_data)
             #. loop over json list
             for itm in all_json_data:
+                conformer=ringsize=numeric=pdbid=macro=None
                 conformer=itm["conformer"]
                 ringsize=itm["ringsize"]
                 numeric=itm["numeric"]
                 pdbid=itm["pdbid"]
-                macro=itm["macro"]
+                try:
+                    macro=itm["macro"]
+                except:
+                    pass
                 try:
                     #. add data to numerics no matter what
                     #.. Add a colorbrewer2.org scheme. 5-class Set3 for qualitative

@@ -57,7 +57,11 @@ multiqc .
 [Install the tessellate tool](https://github.com/scientificomputing/tessellate)
 
 ```
-multiqc output-usecase-cyclodextrin -m montage_tessellate -f
+export DATAPATH=/path/that/holds/your/tessellate/outputs
+multiqc $DATAPATH/output-usecase-timeseries -m montage_tessellate 
+multiqc $DATAPATH/output-usecase-rnadna -m montage_tessellate 
+multiqc $DATAPATH/output-usecase-cyclodextrin -m montage_tessellate 
+
 ```
 
 ### QM example
