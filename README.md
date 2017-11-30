@@ -8,6 +8,8 @@ This fork includes computational chemistry, glycoinformatics and chemical biolog
 
 
 [![Documentation Status](https://readthedocs.org/projects/montage/badge/?version=latest)](https://montage.readthedocs.io/en/latest/?badge=latest)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1068992.svg)](https://doi.org/10.5281/zenodo.1068992)
+
 
 -Find MultiQC [documentation](http://multiqc.info/docs) and [example reports](http://multiqc.info/examples/rna-seq/multiqc_report.html) at [http://multiqc.info](http://multiqc.info)
 
