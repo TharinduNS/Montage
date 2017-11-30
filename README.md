@@ -28,7 +28,7 @@ Currently, supported computational, glycoinformatics and chemical biology tools 
 Install Ananconda python3, then create an environment for MultiQC
 
 ```
-conda create -n multiqc
+conda create -n multiqc python=3
 source activate multiqc
 ```
 
@@ -36,6 +36,7 @@ source activate multiqc
 
 ```
 git clone git@github.com:scientificomputing/Montage.git
+# OR git clone https://github.com/scientificomputing/Montage.git
 pushd Montage
 ```
 
@@ -44,20 +45,30 @@ pushd Montage
 make install
 
 ```
+If make fails, look for required dependencies and install them, for example:
 
+```
+sudo yum install libyaml-devel libpng-devel -y
+make install
+```
 
 ## Usage
-Once installed, you can use MultiQC by navigating to your analysis directory
-(or a parent directory) and running the tool:
-```bash
-multiqc .
-```
 
 ### Tessellate example
+
 [Install the tessellate tool](https://github.com/scientificomputing/tessellate)
 
+The tessellate part:
 ```
-export DATAPATH=/path/that/holds/your/tessellate/outputs
+source activate multiqc
+pip install tessellate
+wget https://github.com/scientificomputing/tessellate/tree/master/data
+tessellate data/usecase-timeseries --input-format=builtin --output-format=json --output-dir=output-usecase-timeseries
+```
+
+The Montage part:
+```
+export DATAPATH=`pwd`
 multiqc $DATAPATH/output-usecase-timeseries -m montage_tessellate 
 multiqc $DATAPATH/output-usecase-rnadna -m montage_tessellate 
 multiqc $DATAPATH/output-usecase-cyclodextrin -m montage_tessellate 
@@ -69,6 +80,13 @@ Select log files from the data dir, only use the quantum analysis module and for
 
 ```bash
 multiqc data/*.log -m comp_qm -f
+```
+
+### General usage
+Once installed, you can use MultiQC by navigating to your analysis directory
+(or a parent directory) and running the tool:
+```bash
+multiqc .
 ```
 
 
